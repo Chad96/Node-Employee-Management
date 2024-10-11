@@ -1,6 +1,7 @@
+// server.js
 const express = require('express');
 const cors = require('cors');
-const { db } = require('./firebaseConfig');
+const { db } = require('./firebaseAdmin'); // Use firebaseAdmin for server-side Firestore
 
 const app = express();
 app.use(cors());

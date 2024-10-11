@@ -1,68 +1,180 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
+/* Basic styling */
 body {
+  font-family: Arial, sans-serif;
   margin: 0;
+  padding: 0;
+  background-color: #f8f9fa; /* Light background color for contrast */
+}
+
+.app {
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  height: 100vh; /* Full height for sidebar and content */
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.sidebar {
+  width: 250px; /* Increased sidebar width */
+  background: #343a40; /* Darker background for the sidebar */
+  color: #fff;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+.sidebar h2 {
+  margin: 0 0 20px; /* Margin for the heading */
+  font-size: 1.5em; /* Larger font size for better visibility */
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 15px 0;
+  transition: background 0.3s; /* Smooth transition for background on hover */
+}
+
+.sidebar li:hover {
+  background: #495057; /* Lighter background on hover */
+}
+
+.sidebar a {
+  color: #ffffff; /* Link color */
+  text-decoration: none; /* Remove underline */
+  display: flex;
+  align-items: center; /* Center icon and text */
+}
+
+.sidebar a:hover {
+  text-decoration: underline; /* Underline on hover for better indication */
+}
+
+.content {
+  padding: 20px;
+  flex-grow: 1;
+  background-color: #ffffff; /* White background for content */
+  overflow-y: auto; /* Enable scrolling if content overflows */
+}
+
+form {
+  background: #e9ecef; /* Light grey background for the form */
+  border-radius: 5px; /* Rounded corners */
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-bottom: 20px; /* Margin below the form */
+}
+
+form input {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 95%; /* Full width for inputs */
+  border: 1px solid #ced4da; /* Border for inputs */
+  border-radius: 5px; /* Rounded corners for inputs */
+  transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+form input:focus {
+  border-color: #007BFF; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+}
+
+form button {
+  padding: 10px 20px;
+  background: #007BFF; /* Primary button color */
+  color: white;
+  border: none;
+  border-radius: 5px; /* Rounded corners */
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: background 0.3s; /* Smooth transition for background */
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+form button:hover {
+  background: #0056b3; /* Darker shade on hover */
+}
+
+.filter-form {
+  margin-bottom: 20px; /* Margin below the filter form */
+}
+
+.filter-form input {
+  margin-bottom: 10px; /* Spacing between input fields */
+}
+
+.employee-list {
+  margin-top: 20px; /* Margin above employee list */
+}
+
+.employee-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.employee-list li {
+  margin: 10px 0;
+  padding: 15px; /* Increased padding for better spacing */
+  background: #f4f4f4; /* Light grey background */
+  border-radius: 5px; /* Rounded corners */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s; /* Smooth transition for background */
+}
+
+.employee-list li:hover {
+  background: #e2e6ea; /* Lighter grey on hover */
+}
+
+.employee-list button {
+  margin-left: 10px;
+  background: transparent; /* Transparent button for icons */
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s; /* Smooth transition for color */
+}
+
+.employee-list button:hover {
+  color: #007BFF; /* Change color on hover */
+}
+
+.employee-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.employee-image {
+  width: 50px;  /* Size of the image */
+  height: 50px;
+  border-radius: 50%;  /* Makes the image round */
+  object-fit: cover;  /* Ensures the image covers the entire area */
+  margin-right: 15px;  /* Adds space between the image and employee details */
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column; /* Stack sidebar and content on small screens */
   }
-  a:hover {
-    color: #747bff;
+
+  .sidebar {
+    width: 100%; /* Full width for sidebar */
+    box-shadow: none; /* Remove shadow for a flat design */
   }
-  button {
-    background-color: #f9f9f9;
+
+  .content {
+    padding: 10px; /* Less padding for smaller screens */
+  }
+
+  form,
+  .filter-form {
+    padding: 15px; /* Adjust form padding for smaller screens */
+  }
+
+  form input,
+  form button {
+    width: 100%; /* Full width for inputs and buttons */
   }
 }

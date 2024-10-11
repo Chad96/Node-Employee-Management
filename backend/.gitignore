@@ -1,1 +1,5 @@
 /node_modules
+serviceAccountKey.json
+server.js
+firebaseAdmin.js
+firebaseConfig.js

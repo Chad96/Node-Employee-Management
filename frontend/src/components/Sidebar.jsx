@@ -7,6 +7,16 @@ const Sidebar = () => {
     <div className="sidebar">
       <h2>Employee Admin</h2>
       <ul>
+      <li>
+          <Link to="/register">
+            <FaUserPlus /> Register
+          </Link>
+        </li>
+        <li>
+          <Link to="/login">
+            <FaUsers /> LogIn
+          </Link>
+        </li>
         <li>
           <Link to="/employees">
             <FaUsers /> Employee List

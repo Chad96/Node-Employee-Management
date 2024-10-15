@@ -4,6 +4,8 @@ import axios from 'axios';
 import Sidebar from './components/Sidebar';
 import AddEmployeeForm from './components/AddEmployeeForm';
 import EmployeeList from './components/EmployeeList';
+import Login from './components/Login';
+import Register from './components/Register';
 
 function App() {
   const [employees, setEmployees] = useState([]);
@@ -122,6 +124,8 @@ function App() {
                 </>
               }
             />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </div>
       </div>

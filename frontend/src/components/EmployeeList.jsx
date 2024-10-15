@@ -10,7 +10,7 @@ const EmployeeList = ({ employees, deleteEmployee, setEditingEmployee }) => {
           <li key={employee.id} className="employee-item">
             {/* Display employee's picture */}
             <img 
-              src={employee.image}  // Assuming each employee has an 'image' property
+              src={employee.image}  //  each employee has an 'image' property
               alt={`${employee.name} ${employee.surname}`} 
               className="employee-image"
             />

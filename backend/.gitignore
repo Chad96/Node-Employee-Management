@@ -3,3 +3,5 @@ serviceAccountKey.json
 server.js
 firebaseAdmin.js
 firebaseConfig.js
+register.jsx
+login.jsx

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from './components/Sidebar';
@@ -6,6 +6,8 @@ import AddEmployeeForm from './components/AddEmployeeForm';
 import EmployeeList from './components/EmployeeList';
 import Login from './components/Login';
 import Register from './components/Register';
+import { AuthProvider, AuthContext } from './context/AuthContext'; // Firebase Auth Context
+import PrivateRoute from './components/PrivateRoute'; // For protecting routes
 
 function App() {
   const [employees, setEmployees] = useState([]);
@@ -55,81 +57,93 @@ function App() {
     );
   });
 
+  // Access AuthContext to get user state
+  const { currentUser } = useContext(AuthContext) || {}; // Default to an empty object
+
   return (
-    <Router>
-      <div className="app">
-        <Sidebar />
-        <div className="content">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <AddEmployeeForm 
-                    addEmployee={addEmployee} 
-                    updateEmployee={updateEmployee} 
-                    editingEmployee={editingEmployee} 
-                    setEditingEmployee={setEditingEmployee} 
-                  />
-                  <EmployeeList 
-                    employees={filteredEmployees} // Use filtered employees
-                    deleteEmployee={deleteEmployee} 
-                    setEditingEmployee={setEditingEmployee} 
-                  />
-                </>
-              }
-            />
-            <Route
-              path="/employees"
-              element={
-                <>
-                  <div className="filter-form">
-                    <h3>Filter Employees</h3>
-                    <input
-                      type="text"
-                      placeholder="Name or Surname"
-                      value={filter.name}
-                      onChange={e => setFilter({ ...filter, name: e.target.value })}
-                    />
-                    <input
-                      type="text"
-                      placeholder="ID Number"
-                      value={filter.id}
-                      onChange={e => setFilter({ ...filter, id: e.target.value })}
-                    />
-                    <input
-                      type="email"
-                      placeholder="Email Address"
-                      value={filter.email}
-                      onChange={e => setFilter({ ...filter, email: e.target.value })}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Position"
-                      value={filter.position}
-                      onChange={e => setFilter({ ...filter, position: e.target.value })}
-                    />
-                    <input
-                      type="tel"
-                      placeholder="Phone Number"
-                      value={filter.phone}
-                      onChange={e => setFilter({ ...filter, phone: e.target.value })}
-                    />
-                  </div>
-                  <EmployeeList 
-                    employees={filteredEmployees} // Use filtered employees
-                    deleteEmployee={deleteEmployee} 
-                    setEditingEmployee={setEditingEmployee} 
-                  />
-                </>
-              }
-            />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
+    <AuthProvider>
+      <Router>
+        <div className="app">
+          <Sidebar currentUser={currentUser} />
+          <div className="content">
+            <Routes>
+              {/* Protected Routes for Employees */}
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <>
+                      <AddEmployeeForm 
+                        addEmployee={addEmployee} 
+                        updateEmployee={updateEmployee} 
+                        editingEmployee={editingEmployee} 
+                        setEditingEmployee={setEditingEmployee} 
+                      />
+                      <EmployeeList 
+                        employees={filteredEmployees} // Use filtered employees
+                        deleteEmployee={deleteEmployee} 
+                        setEditingEmployee={setEditingEmployee} 
+                      />
+                    </>
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/employees"
+                element={
+                  <PrivateRoute>
+                    <>
+                      <div className="filter-form">
+                        <h3>Filter Employees</h3>
+                        <input
+                          type="text"
+                          placeholder="Name or Surname"
+                          value={filter.name}
+                          onChange={e => setFilter({ ...filter, name: e.target.value })}
+                        />
+                        <input
+                          type="text"
+                          placeholder="ID Number"
+                          value={filter.id}
+                          onChange={e => setFilter({ ...filter, id: e.target.value })}
+                        />
+                        <input
+                          type="email"
+                          placeholder="Email Address"
+                          value={filter.email}
+                          onChange={e => setFilter({ ...filter, email: e.target.value })}
+                        />
+                        <input
+                          type="text"
+                          placeholder="Position"
+                          value={filter.position}
+                          onChange={e => setFilter({ ...filter, position: e.target.value })}
+                        />
+                        <input
+                          type="tel"
+                          placeholder="Phone Number"
+                          value={filter.phone}
+                          onChange={e => setFilter({ ...filter, phone: e.target.value })}
+                        />
+                      </div>
+                      <EmployeeList 
+                        employees={filteredEmployees} // Use filtered employees
+                        deleteEmployee={deleteEmployee} 
+                        setEditingEmployee={setEditingEmployee} 
+                      />
+                    </>
+                  </PrivateRoute>
+                }
+              />
+
+              {/* Public Routes */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 }
 

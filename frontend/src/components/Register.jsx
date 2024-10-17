@@ -1,39 +1,45 @@
 import React, { useState } from 'react';
-import { initializeApp } from "firebase/app";
+import { useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAKpD-RNAl7Hb0IJe_hszll48TuCI4PkTM",
-  authDomain: "node-employee-management-auth.firebaseapp.com",
-  projectId: "node-employee-management-auth",
-  storageBucket: "node-employee-management-auth.appspot.com",
-  messagingSenderId: "923349428335",
-  appId: "1:923349428335:web:0e69e65323c1e9031a059a"
-};
-
-// Initialize Firebase and Firebase Auth
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+import { useAuth } from '../context/AuthContext'; // Firebase Auth Context for global state
 
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // Loading state during registration
+  const { setCurrentUser } = useAuth(); // Access the AuthContext
+  const navigate = useNavigate(); // For redirection
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
+    setError(''); // Clear any previous errors
+
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+    const trimmedConfirmPassword = confirmPassword.trim();
+
+    if (trimmedPassword !== trimmedConfirmPassword) {
       setError('Passwords do not match');
       return;
     }
 
+    setLoading(true); // Start loading
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      // Redirect to dashboard or login page after registration
-      window.location.href = '/login'; // Change path as per your routing
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
+      
+      // Set the newly registered user in the global context
+      setCurrentUser(userCredential.user);
+
+      // Redirect to login page after successful registration
+      navigate('/login');
     } catch (err) {
-      setError(err.message);
+      setError('Failed to register. Please try again.');
+      console.error(err.message);
+    } finally {
+      setLoading(false); // Stop loading state
     }
   };
 
@@ -49,6 +55,7 @@ const Register = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
         <div>
@@ -58,6 +65,7 @@ const Register = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
         <div>
@@ -67,9 +75,12 @@ const Register = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Registering...' : 'Register'}
+        </button>
       </form>
     </div>
   );

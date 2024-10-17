@@ -1,6 +1,7 @@
 // firebaseConfig.js (Client-Side)
 
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth"; // Import Firebase Auth
 import { getStorage } from "firebase/storage"; // Import Firebase Storage
 
 // Firebase configuration for client-side
@@ -13,8 +14,12 @@ const firebaseConfig = {
   appId: "1:484151775479:web:357661aa35f6187af983f2"
 };
 
-// Initialize Firebase and Storage
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+// Initialize Firebase Auth and Storage
+const auth = getAuth(app); // Initialize Firebase Auth
 const storage = getStorage(app); // Initialize Firebase Storage
 
-export { app, storage }; // Export the storage instance
+// Export the initialized Firebase services
+export { app, auth, storage };
